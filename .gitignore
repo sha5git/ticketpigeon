@@ -31,3 +31,6 @@ Desktop.ini
 # Log files
 *.log
 logs/
+
+# Local Environment Secrets
+.env

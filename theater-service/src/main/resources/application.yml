@@ -5,9 +5,9 @@ spring:
   application:
     name: theater-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/ticketpigeon_theater
-    username: postgres
-    password: root
+    url: ${THEATER_DB_URL:jdbc:postgresql://localhost:5432/ticketpigeon_theater}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:root}
   jpa:
     hibernate:
       ddl-auto: update
@@ -16,7 +16,7 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 gateway:
-  secret: ELRpz7MMNGUwuQ4jXdEX4JojHTeQKGRICEceYEpupUT
+  secret: ${GATEWAY_SECRET:ELRpz7MMNGUwuQ4jXdEX4JojHTeQKGRICEceYEpupUT}
 
 eureka:
   client:

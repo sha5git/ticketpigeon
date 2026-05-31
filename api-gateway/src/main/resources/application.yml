@@ -36,4 +36,4 @@ management:
         include: health, info, gateway
 
 jwt:
-  secret: ELRpz7MMNGUwuQ4jXdEX4JojHTeQKGRICEceYEpupUT
+  secret: ${JWT_SECRET:ELRpz7MMNGUwuQ4jXdEX4JojHTeQKGRICEceYEpupUT}

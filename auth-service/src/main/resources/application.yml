@@ -5,9 +5,9 @@ spring:
   application:
     name: auth-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/ticketpigeon_auth
-    username: postgres
-    password: root
+    url: ${AUTH_DB_URL:jdbc:postgresql://localhost:5432/ticketpigeon_auth}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:root}
   jpa:
     hibernate:
       ddl-auto: update
@@ -21,5 +21,5 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
 
 jwt:
-  secret: ELRpz7MMNGUwuQ4jXdEX4JojHTeQKGRICEceYEpupUT
+  secret: ${JWT_SECRET:ELRpz7MMNGUwuQ4jXdEX4JojHTeQKGRICEceYEpupUT}
   expiration: 86400000 # 24 hours

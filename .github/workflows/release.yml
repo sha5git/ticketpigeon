@@ -1,0 +1,44 @@
+name: 🚀 TicketPigeon Release Pipeline
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Fetching Source Code
+        uses: actions/checkout@v4
+
+      - name: ☕ Installing JDK 17 (Temurin)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: 📦 Compiling Java Apps (Skipping Tests)
+        run: mvn clean package -DskipTests
+
+      - name: 📤 Attaching JARs to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            service-discovery/target/*.jar
+            !service-discovery/target/*.jar.original
+
+            api-gateway/target/*.jar
+            !api-gateway/target/*.jar.original
+
+            auth-service/target/*.jar
+            !auth-service/target/*.jar.original
+
+            movie-service/target/*.jar
+            !movie-service/target/*.jar.original
+
+            theater-service/target/*.jar
+            !theater-service/target/*.jar.original
