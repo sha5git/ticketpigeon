@@ -25,6 +25,9 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
     @Value("${jwt.secret}")
     private String secret;
 
+    @Value("${gateway.secret}")
+    private String gatewaySecret;
+
     // Paths that don't require authentication
     private static final List<String> PUBLIC_PATHS = List.of(
             "/api/v1/auth"
@@ -33,7 +36,8 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
     // Paths that are public for GET but secured for POST/PUT/DELETE
     private static final List<String> READ_PUBLIC_PATHS = List.of(
             "/api/v1/movies",
-            "/api/v1/theaters"
+            "/api/v1/theaters",
+            "/api/v1/inventory/shows"
     );
 
     // Paths that require ADMIN role for POST/PUT/DELETE
@@ -91,6 +95,7 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
 
         String role = claims.get("role", String.class);
         String email = claims.getSubject();
+        String userId = claims.get("userId", String.class);
 
         // 5. Role-Based Access Control for write operations
         if (method == HttpMethod.POST || method == HttpMethod.PUT || method == HttpMethod.DELETE) {
@@ -107,11 +112,16 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         }
 
         // 6. Forward user info + gateway secret as headers to downstream services
-        ServerHttpRequest modifiedRequest = request.mutate()
+        ServerHttpRequest.Builder builder = request.mutate()
                 .header("X-User-Email", email)
                 .header("X-User-Role", role)
-                .header("X-Gateway-Secret", secret)
-                .build();
+                .header("X-Gateway-Secret", gatewaySecret);
+
+        if (userId != null) {
+            builder.header("X-User-Id", userId);
+        }
+
+        ServerHttpRequest modifiedRequest = builder.build();
 
         return chain.filter(exchange.mutate().request(modifiedRequest).build());
     }
@@ -123,7 +133,7 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
      */
     private Mono<Void> forwardWithSecret(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest stamped = exchange.getRequest().mutate()
-                .header("X-Gateway-Secret", secret)
+                .header("X-Gateway-Secret", gatewaySecret)
                 .build();
         return chain.filter(exchange.mutate().request(stamped).build());
     }

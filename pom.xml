@@ -17,6 +17,8 @@
         <module>auth-service</module>
         <module>movie-service</module>
         <module>theater-service</module>
+        <module>inventory-service</module>
+        <module>booking-service</module>
     </modules>
 
     <properties>

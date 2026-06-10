@@ -1,0 +1,34 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: inventory-service
+  datasource:
+    url: ${INVENTORY_DB_URL:jdbc:postgresql://localhost:5432/ticketpigeon_inventory}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      ssl:
+        enabled: ${REDIS_SSL:false}
+
+gateway:
+  secret: ${GATEWAY_SECRET:ELRpz7MMNGUwuQ4jXdEX4JojHTeQKGRICEceYEpupUT}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}

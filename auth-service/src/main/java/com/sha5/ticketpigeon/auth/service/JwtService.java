@@ -11,6 +11,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class JwtService {
@@ -26,8 +27,9 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String email, String role) {
+    public String generateToken(UUID userId, String email, String role) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", userId.toString());
         claims.put("role", role);
         return createToken(claims, email);
     }

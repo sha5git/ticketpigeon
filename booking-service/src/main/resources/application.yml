@@ -1,0 +1,27 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: booking-service
+  datasource:
+    url: ${BOOKING_DB_URL:jdbc:postgresql://localhost:5432/ticketpigeon_booking}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:root}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+gateway:
+  secret: ${GATEWAY_SECRET:ELRpz7MMNGUwuQ4jXdEX4JojHTeQKGRICEceYEpupUT}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}

@@ -33,4 +33,5 @@ Desktop.ini
 logs/
 
 # Local Environment Secrets
-.env
+.env
+.project_state.md
