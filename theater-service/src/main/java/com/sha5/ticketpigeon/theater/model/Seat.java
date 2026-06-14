@@ -8,7 +8,15 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
-@Table(name = "seats")
+@Table(
+    name = "seats",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "uk_seat_screen_row_number",
+            columnNames = {"screen_id", "row_id", "seat_number"}
+        )
+    }
+)
 @Data
 @Builder
 @NoArgsConstructor
@@ -23,6 +31,7 @@ public class Seat {
     @JsonIgnore
     private Screen screen;
 
+    @Column(name = "row_id")
     private String rowId;
     private Integer seatNumber;
     private String type;
