@@ -8,7 +8,15 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "screens")
+@Table(
+    name = "screens",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "uk_screen_theater_name",
+            columnNames = {"theater_id", "name"}
+        )
+    }
+)
 @Data
 @Builder
 @NoArgsConstructor
